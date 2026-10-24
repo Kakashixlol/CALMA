@@ -1,0 +1,6 @@
+{
+  "name": "CALMA 3D Wearable Simulator",
+  "description": "Interactive 3D CAD visualization and component engineering simulator for the CALMA stress-awareness wearable bracelet.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
