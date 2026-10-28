@@ -37,7 +37,9 @@ export type CameraPreset =
   | 'closeup'
   | 'front'
   | 'right'
-  | 'isometric';
+  | 'isometric'
+  | 'worn_closeup'
+  | 'worn_forearm';
 
 export type ViewDisplayMode = 'solid' | 'xray' | 'section';
 

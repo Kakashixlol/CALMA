@@ -22,6 +22,7 @@ import {
   buildWristStrap,
   buildWs2812bLed,
 } from './proceduralGeometry';
+import { buildVirtualWristModel } from './wristModel';
 
 export interface SceneCallbacks {
   onSelectComponent: (componentId: string | null) => void;
@@ -40,6 +41,11 @@ export class CalmaSceneManager {
   public componentDataMap: Map<string, ComponentData> = new Map();
   public visibilityMap: Map<string, boolean> = new Map();
 
+  // Virtual Human Wrist Model
+  private wristModel: THREE.Group | null = null;
+  private isWornMode: boolean = false;
+  private multiHighlightBoxes: THREE.BoxHelper[] = [];
+
   // State
   private explodeTarget: number = 0; // 0 to 1
   private currentExplode: number = 0;
@@ -50,6 +56,10 @@ export class CalmaSceneManager {
   private showDimensions: boolean = false;
   private showLeaderLines: boolean = false;
   private presentationMode: boolean = false;
+
+  // LED Animation State
+  private ledAnimationMode: 'solid' | 'pulse' | 'breathing' | 'warning' = 'solid';
+  private currentLedColor: string = '#00f0d0';
 
   // Camera Animation
   private cameraTargetPos: THREE.Vector3 = new THREE.Vector3(80, 60, 95);
@@ -270,6 +280,11 @@ export class CalmaSceneManager {
 
     this.scene.add(this.dimensionsGroup);
     this.scene.add(this.leadersGroup);
+
+    // 12. Build Virtual Human Forearm & Wrist (for Worn / Digital Twin Mode)
+    this.wristModel = buildVirtualWristModel(this.matLib);
+    this.wristModel.visible = this.isWornMode;
+    this.scene.add(this.wristModel);
   }
 
   private buildDimensions() {
@@ -408,16 +423,20 @@ export class CalmaSceneManager {
     if (intersects.length > 0) {
       const compId = intersects[0].object.userData.componentId;
       if (compId) {
-        this.selectComponent(compId);
+        this.selectComponent(compId, true);
         return;
       }
     }
-    this.selectComponent(null);
+    this.selectComponent(null, true);
   }
 
-  public selectComponent(id: string | null) {
+  public selectComponent(id: string | null, notify: boolean = true) {
+    if (this.selectedId === id) return;
     this.selectedId = id;
-    this.callbacks.onSelectComponent(id);
+
+    if (notify) {
+      this.callbacks.onSelectComponent(id);
+    }
 
     // Update highlight box
     if (this.selectionBox) {
@@ -594,6 +613,58 @@ export class CalmaSceneManager {
         this.cameraTargetPos.set(85, 75, 85);
         this.cameraLookTarget.set(0, 0, 0);
         break;
+      case 'worn_closeup':
+        this.cameraTargetPos.set(38, 30, 52);
+        this.cameraLookTarget.set(0, -6, 0);
+        break;
+      case 'worn_forearm':
+        this.cameraTargetPos.set(95, 65, 115);
+        this.cameraLookTarget.set(0, -10, 0);
+        break;
+    }
+  }
+
+  public setWornMode(worn: boolean) {
+    this.isWornMode = worn;
+    if (this.wristModel) {
+      this.wristModel.visible = worn;
+    }
+    // If entering worn mode, collapse explode to 0 so watch sits flush on wrist
+    if (worn && this.explodeTarget > 0) {
+      this.setExplodeAmount(0);
+    }
+  }
+
+  public getWornMode(): boolean {
+    return this.isWornMode;
+  }
+
+  public highlightComponents(ids: string[]) {
+    this.clearMultiHighlights();
+    ids.forEach((id) => {
+      const group = this.componentGroups.get(id);
+      if (group && group.visible) {
+        const helper = new THREE.BoxHelper(group, 0x38bdf8); // Cyan pipeline highlight
+        (helper.material as THREE.LineBasicMaterial).linewidth = 2;
+        this.scene.add(helper);
+        this.multiHighlightBoxes.push(helper);
+      }
+    });
+  }
+
+  public clearMultiHighlights() {
+    this.multiHighlightBoxes.forEach((helper) => {
+      this.scene.remove(helper);
+      helper.dispose();
+    });
+    this.multiHighlightBoxes = [];
+  }
+
+  public setLedMode(mode: 'solid' | 'pulse' | 'breathing' | 'warning', colorHex: string = '#00f0d0') {
+    this.ledAnimationMode = mode;
+    this.currentLedColor = colorHex;
+    if (mode === 'solid') {
+      this.matLib.setLedColor(colorHex, 2.0);
     }
   }
 
@@ -685,12 +756,31 @@ export class CalmaSceneManager {
       }
     }
 
-    // 4. Update Selection Bounding Box if active
+    // 4. Dynamic LED Animation
+    const now = Date.now();
+    let computedIntensity = 2.0;
+    if (this.ledAnimationMode === 'pulse') {
+      computedIntensity = 1.0 + Math.sin(now * 0.008) * 0.8;
+      this.matLib.setLedColor(this.currentLedColor, Math.max(0.2, computedIntensity));
+    } else if (this.ledAnimationMode === 'breathing') {
+      computedIntensity = 0.6 + Math.sin(now * 0.0022) * 0.55;
+      this.matLib.setLedColor(this.currentLedColor, Math.max(0.1, computedIntensity));
+    } else if (this.ledAnimationMode === 'warning') {
+      computedIntensity = (now % 500 < 250) ? 2.8 : 0.2;
+      this.matLib.setLedColor(this.currentLedColor, computedIntensity);
+    }
+
+    // 5. Update Selection Bounding Box if active
     if (this.selectionBox && this.selectedId) {
       const targetGroup = this.componentGroups.get(this.selectedId);
       if (targetGroup) {
         this.selectionBox.update();
       }
+    }
+
+    // 6. Update Multi-Highlight Bounding Boxes
+    if (this.multiHighlightBoxes.length > 0) {
+      this.multiHighlightBoxes.forEach((box) => box.update());
     }
 
     this.controls.update();

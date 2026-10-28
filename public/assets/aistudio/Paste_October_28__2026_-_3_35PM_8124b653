@@ -1,0 +1,1480 @@
+MASTER DEVELOPMENT PROMPT
+
+CALMA — Advanced Interactive Digital Twin, 3D Wearable Simulator & Physiological Response Simulation
+
+1. YOUR ROLE
+
+Act as a multidisciplinary senior engineering team consisting of:
+
+A senior Three.js and React 3D graphics engineer.
+
+A mechanical CAD and wearable-product design engineer.
+
+An embedded systems engineer specializing in ESP32 and sensor integration.
+
+A physiological signal simulation and signal-processing engineer.
+
+A digital-twin architect.
+
+A human anatomy and character-visualization specialist.
+
+A data visualization engineer.
+
+A senior UI/UX designer for engineering and scientific applications.
+
+A software quality assurance engineer.
+
+Your task is to transform the EXISTING CALMA 3D Wearable Simulator into a sophisticated, interactive product-design and operational-simulation platform.
+
+The existing application already contains a 3D bracelet assembly, component tree, exploded view, camera controls, inspection modes, product specifications, and a dark engineering interface.
+
+Preserve these features and significantly improve the application by adding a complete operational simulation environment.
+
+The final product should allow a viewer to understand:
+
+What CALMA physically looks like.
+
+How its internal components are arranged.
+
+How each component contributes to the system.
+
+How simulated physiological signals change under different conditions.
+
+How the ESP32 processing logic interprets those signals.
+
+How motion artifacts are distinguished from stress-like patterns.
+
+How the system decides whether to trigger a calming intervention.
+
+How the RGB indicator and vibration motor respond.
+
+How a breathing-guided calming session works.
+
+How the device communicates its state to a monitoring dashboard.
+
+This must be a genuinely interactive application, not a static demonstration or a collection of disconnected mockup screens.
+
+Critical requirement: Implement all improvements directly in the current project. Do not replace the existing application with a new one.
+
+2. FIRST: AUDIT THE EXISTING APPLICATION
+
+Before modifying any files, inspect the current codebase and determine:
+
+Which framework and rendering engine are already in use.
+
+How the existing 3D assembly is constructed.
+
+How components are identified and selected.
+
+How visibility toggles work.
+
+How the exploded-view transforms are calculated.
+
+How camera controls and inspection modes are implemented.
+
+How the current interface and state management are structured.
+
+Which existing features are functional and which are placeholders.
+
+Preserve the current project architecture wherever possible.
+
+Reuse existing component IDs, scene objects, state stores, camera controls, materials, and interface components.
+
+Do not duplicate the existing 3D scene unnecessarily.
+
+Do not remove or regress any working functionality.
+
+Implement the new simulation as an additional, integrated operating mode that shares the existing component data and 3D scene where practical.
+
+If a required feature already exists, extend it instead of rebuilding it.
+
+3. NEW APPLICATION STRUCTURE
+
+Introduce a professional navigation system with the following modes:
+
+Mode A — 3D Engineering Explorer
+
+Retain and improve the existing engineering environment.
+
+Include:
+
+Interactive 3D bracelet.
+
+Assembly feature tree.
+
+Individual component selection.
+
+Show/hide controls.
+
+Component isolation.
+
+Exploded assembly.
+
+Continuous explode slider.
+
+Camera presets.
+
+Solid, X-Ray, and Section Cut inspection modes.
+
+Component properties.
+
+Dimensions and materials.
+
+Internal electronics visualization.
+
+Mode B — Live Operational Simulation
+
+Create a new, fully interactive environment that simulates the bracelet operating on a human wrist.
+
+Include:
+
+A 3D human wrist and forearm.
+
+CALMA worn in a physically plausible position.
+
+Simulated physiological signals.
+
+A live sensor-processing pipeline.
+
+A transparent stress-awareness decision engine.
+
+RGB LED behavior.
+
+Vibration motor animation.
+
+A breathing-guided calming session.
+
+Live charts and event logs.
+
+Device status and battery indicators.
+
+Mode C — System Architecture
+
+Create a technical view showing how the system works from sensor input to response.
+
+Show this pipeline:
+
+PPG / GSR / IMU / Temperature
+→ Signal Acquisition
+→ Signal Filtering
+→ Motion Artifact Rejection
+→ Personal Baseline Comparison
+→ Stress-Like Pattern Evaluation
+→ Decision Engine
+→ RGB Indicator + Vibration Motor
+→ Dashboard Update
+
+Each stage should be interactive.
+
+Clicking a stage should explain its purpose, display relevant simulated values, and highlight the associated physical components in the existing 3D model.
+
+Mode D — Guided Demonstration
+
+Provide a polished, presentation-friendly demonstration that automatically walks the viewer through the device architecture and an operational scenario.
+
+Include pause, resume, restart, skip, and manual camera control.
+
+Do not make the guided demonstration a mandatory tutorial. Users must be able to operate the simulator independently.
+
+4. BUILD A REALISTIC 3D HUMAN WRIST EXPERIENCE
+
+This is a major new feature.
+
+Create a dedicated 3D scene containing a human forearm, wrist, and hand with CALMA correctly positioned on the dorsal wrist.
+
+The model should have a natural human silhouette, realistic proportions, smooth anatomy, and believable skin shading.
+
+Avoid:
+
+A cylindrical arm that looks like a pipe.
+
+A floating bracelet.
+
+A hand without recognizable anatomical proportions.
+
+A wrist that intersects the enclosure.
+
+A bracelet that appears embedded in the skin.
+
+Excessive anatomical detail that harms performance.
+
+Use a suitable existing character asset if one is already available and licensed for use. Otherwise, construct a lightweight procedural anatomical model or another feasible 3D representation.
+
+Do not depend on an external model download for the application's first successful render.
+
+Human model requirements
+
+Provide:
+
+A wrist and forearm with believable tapering.
+
+A recognizable hand silhouette.
+
+Natural skin-colored PBR materials.
+
+Subtle surface shading.
+
+Appropriate proportions relative to the bracelet.
+
+Correct contact between the wrist and the strap.
+
+A suitable viewing angle that shows the bracelet clearly.
+
+The bracelet should remain the main visual focus.
+
+Human model interaction
+
+Allow users to:
+
+Rotate around the wrist.
+
+Zoom in and out.
+
+Inspect the top and underside.
+
+Switch between a wrist close-up and a wider forearm view.
+
+Toggle the human model on or off.
+
+Switch between a worn view and the standalone product view.
+
+Switch between the normal assembled bracelet and an exploded engineering view.
+
+Where practical, allow switching between a few presentation poses without rebuilding the scene.
+
+Worn-state accuracy
+
+The strap must wrap around the wrist rather than intersecting it.
+
+The housing should sit on top of the wrist.
+
+The optical sensor window and GSR electrodes must face the skin.
+
+The skin-contact sensor locations should be explained visually.
+
+Do not imply that the virtual human model is an anatomically or medically validated simulation.
+
+5. CONNECT THE EXISTING COMPONENTS TO THE OPERATIONAL SIMULATOR
+
+The operational simulation must reuse the actual component definitions and scene objects from the existing CALMA assembly.
+
+Do not create a second set of unrelated decorative components.
+
+Implement a shared component registry with stable identifiers for:
+
+Main housing.
+
+Top lid.
+
+Wrist strap.
+
+Lower sensor plate.
+
+Optical lens.
+
+ESP32-WROOM-32.
+
+MAX30102.
+
+Grove GSR/EDA module.
+
+MPU6050.
+
+MAX30205.
+
+Coin vibration motor.
+
+WS2812B RGB LED.
+
+Li-Po battery.
+
+TP4056 charging module.
+
+2N2222 transistor.
+
+1N4007 diode.
+
+Related driver components.
+
+The registry should contain each component's:
+
+Unique ID.
+
+Display name.
+
+Functional role.
+
+Parent assembly.
+
+Reference dimensions.
+
+Scene object reference.
+
+Assembled transform.
+
+Exploded transform.
+
+Visibility state.
+
+Current operational state where applicable.
+
+When the simulator activates a sensor, highlight that sensor in the 3D scene.
+
+When the decision engine activates the motor, highlight the motor and driver circuit.
+
+When the RGB indicator changes state, update the actual LED object in the scene.
+
+When the user clicks a sensor in the component tree, show its current simulated readings in the operational dashboard.
+
+When the user isolates a component, preserve the ability to inspect its operational role and current status.
+
+Maintain one consistent source of truth for the assembly and simulation.
+
+6. CREATE A PHYSIOLOGICAL SIGNAL SIMULATION ENGINE
+
+Implement a deterministic, configurable, time-dependent simulation engine.
+
+Do not use random numbers independently on every rendering frame to create arbitrary sensor readings.
+
+The engine should generate coherent signal sequences with configurable baselines, gradual changes, controlled noise, and relationships between signals.
+
+Use a simulation clock independent of the 3D rendering frame rate.
+
+The same simulation state must drive:
+
+Sensor values.
+
+Live charts.
+
+Status indicators.
+
+Decision-engine inputs.
+
+RGB LED state.
+
+Vibration motor state.
+
+Event logs.
+
+Wrist-model animations where appropriate.
+
+All generated values must be explicitly labeled as simulated.
+
+A. PPG / Heart Rate
+
+Simulate:
+
+A configurable resting baseline.
+
+Gradual heart-rate changes.
+
+A plausible response during a stress-like scenario.
+
+A separate increase caused by physical movement.
+
+Signal noise and occasional motion artifacts.
+
+Recovery toward baseline after a calming session.
+
+Display:
+
+Heart rate in BPM.
+
+A scrolling time-series chart.
+
+A simple PPG waveform where practical.
+
+Signal-quality status.
+
+Whether the current reading is considered reliable.
+
+Do not treat heart rate alone as sufficient evidence of stress.
+
+B. GSR / EDA
+
+Simulate skin-conductance changes with:
+
+A configurable personal baseline.
+
+Gradual increases during an illustrative stress-like scenario.
+
+Slower recovery.
+
+Small fluctuations and controlled noise.
+
+Signal-quality and contact status.
+
+Display the value in a clearly defined unit.
+
+If the actual GSR hardware's calibration and conversion parameters are unavailable, label the output as simulated conductance or a normalized signal rather than claiming accurate physiological measurement.
+
+Do not invent a universal threshold that identifies stress in every individual.
+
+C. IMU / Motion
+
+Simulate:
+
+Resting motion.
+
+Small wrist movements.
+
+Walking-like movement.
+
+Sudden movement.
+
+Motion artifacts affecting optical pulse measurements.
+
+Display:
+
+Motion state.
+
+Relative acceleration or illustrative acceleration values.
+
+Motion intensity.
+
+Signal-quality state.
+
+Use the IMU signal to demonstrate why a raised heart rate during exercise should not automatically trigger a stress-related intervention.
+
+D. Skin Temperature
+
+Simulate a slowly varying contextual skin-temperature signal.
+
+Include:
+
+Baseline.
+
+Small gradual variation.
+
+A configurable trend during the scenario.
+
+Recovery or stabilization.
+
+Do not use temperature alone to determine stress.
+
+Do not imply that the simulation represents a clinically validated thermal model.
+
+E. Signal quality and sensor contact
+
+Add an adjustable contact-quality control.
+
+When contact becomes poor:
+
+Reduce signal quality.
+
+Add appropriate noise or missing data.
+
+Display a contact warning.
+
+Prevent the decision engine from treating unreliable readings as certain.
+
+Provide individual sensor enable/disable controls.
+
+If a sensor is disabled, display its state and explain how the decision engine handles missing data.
+
+7. CREATE A TRANSPARENT DECISION ENGINE
+
+Implement a real, functioning rule-based simulation rather than an animation that merely changes the interface to "STRESSED."
+
+The processing logic should have explicit states, configurable parameters, and readable decision explanations.
+
+Suggested operational states:
+
+INITIALIZING.
+
+CALIBRATING.
+
+BASELINE_STABLE.
+
+ELEVATED_SIGNAL.
+
+MOTION_ARTIFACT.
+
+POSSIBLE_STRESS_PATTERN.
+
+CALMING_INTERVENTION.
+
+RECOVERY.
+
+POOR_SENSOR_CONTACT.
+
+INSUFFICIENT_DATA.
+
+These states must be determined by the simulation engine, not by the currently selected screen.
+
+Personal baseline
+
+Provide a simulated baseline-calibration process.
+
+For example:
+
+Collect several seconds of illustrative resting data.
+
+Calculate a reference heart rate.
+
+Calculate a reference GSR level.
+
+Establish a motion baseline.
+
+Mark the calibration as simulated.
+
+Allow users to reset or repeat calibration.
+
+Make baseline values configurable for demonstrations.
+
+Illustrative stress-like detection
+
+Use a configurable combination of:
+
+Heart-rate deviation from baseline.
+
+GSR deviation from baseline.
+
+Motion state.
+
+Signal quality.
+
+Persistence over time.
+
+Optional contextual temperature information.
+
+Use the following conceptual logic:
+
+IF the signal quality is poor:
+Enter an insufficient-data or poor-contact state.
+
+ELSE IF motion is high and heart rate increases:
+Evaluate motion-artifact rejection before interpreting the change.
+
+ELSE IF multiple reliable signals remain elevated for a configurable period:
+Enter a possible-stress-pattern state.
+
+ELSE:
+Remain stable or continue monitoring.
+
+Only trigger a calming intervention according to the configured decision rules.
+
+The exact thresholds and durations must be configurable and documented.
+
+The report's illustrative threshold ideas may be used as initial demo settings, but do not present them as clinically validated values.
+
+Decision explanation
+
+Whenever the state changes, explain:
+
+Which signals changed.
+
+How they compare with the personal baseline.
+
+Whether motion rejection was applied.
+
+Whether signal quality was sufficient.
+
+Why the current state was selected.
+
+Why an intervention was or was not triggered.
+
+For example:
+
+"Heart rate is above the simulated personal baseline, GSR is elevated, motion is low, and signal quality is adequate. The illustrative rule-based engine has identified a persistent stress-like pattern."
+
+This must be a genuine explanation generated from the engine's current values, not a fixed message displayed regardless of what happens.
+
+Do not describe the output as a medical diagnosis.
+
+8. RGB LED SIMULATION
+
+Connect the existing WS2812B component to a functional LED state machine.
+
+Provide configurable visual states such as:
+
+OFF: no illumination.
+
+INITIALIZING: subtle blue or neutral pulse.
+
+BASELINE_STABLE: soft green or teal.
+
+POSSIBLE_STRESS_PATTERN: amber.
+
+CALMING_INTERVENTION: a gradual, breathing-synchronized color animation.
+
+RECOVERY: a gentle transition toward the normal state.
+
+POOR_SENSOR_CONTACT: a distinct warning pattern.
+
+These are illustrative design choices, not verified firmware specifications.
+
+Make the colors, transition speeds, brightness, and patterns configurable.
+
+The LED's material or light source in the 3D scene must visibly update.
+
+Avoid excessive bloom or large artificial light halos.
+
+The RGB indicator must remain visible in both the standalone product and worn views.
+
+Provide a compact panel displaying:
+
+Current LED state.
+
+Current RGB color.
+
+Active pattern.
+
+Remaining pattern duration.
+
+Add a manual test control for the RGB indicator.
+
+Manual testing must not silently override the automatic simulation state. Clearly distinguish manual testing from automatic operation.
+
+9. VIBRATION MOTOR SIMULATION
+
+Make the existing 10 mm coin vibration motor an active part of the simulation.
+
+Visual motor behavior
+
+When activated:
+
+Highlight the motor in the 3D assembly.
+
+Display a subtle vibration animation or animated indicator.
+
+Show the motor's current operating state.
+
+Display the current illustrative intensity.
+
+Display the selected pattern and remaining duration.
+
+If practical, implement a localized vibration effect using a small oscillating motor representation or a subtle animated housing response.
+
+Avoid violently shaking the entire model or making the bracelet visually unstable.
+
+Provide configurable patterns such as:
+
+Short confirmation pulse.
+
+Gentle repeating pulse.
+
+Breathing-synchronized pulse.
+
+Manual test pulse.
+
+Define patterns through configurable durations and relative intensities.
+
+If the browser supports device vibration and the user explicitly enables it, an optional navigator.vibrate integration may be added with feature detection and appropriate user-gesture handling.
+
+However, never claim that a virtual motor physically vibrates.
+
+In the standard desktop simulation, the motor's vibration is represented visually and through status indicators. Real physical vibration requires compatible hardware and an actual motor-driver circuit.
+
+Do not attempt to control real hardware through an ordinary web simulation unless an explicitly configured hardware communication interface exists.
+
+10. BREATHING-SYNCHRONIZED CALMING SESSION
+
+Implement an interactive guided breathing session integrated with the operational simulation.
+
+Provide a breathing visualization with:
+
+An expanding and contracting circle or equivalent visual guide.
+
+Clear inhale, exhale, and optional pause phases.
+
+A countdown timer.
+
+Session progress.
+
+Pause, resume, and stop controls.
+
+A configurable duration.
+
+A configurable breathing pattern.
+
+Use a gentle default breathing rhythm, such as a four-second inhale and a six-second exhale, with no forced breath holding.
+
+Allow the pattern to be changed.
+
+Connect the breathing session to the virtual device
+
+During a calming session:
+
+The breathing guide animates continuously.
+
+The RGB LED follows the configured breathing pattern.
+
+The vibration motor follows the configured haptic pattern.
+
+The event log records each intervention phase.
+
+The dashboard displays the session status.
+
+The simulation engine gradually changes the illustrative physiological signals toward their configured recovery baselines.
+
+Do not force every signal to return to baseline immediately.
+
+Do not claim that the simulated breathing session proves real-world therapeutic effectiveness.
+
+Show the session as a demonstration of the intended interaction design.
+
+When the session ends, display:
+
+Session duration.
+
+Simulated starting and ending values.
+
+The illustrative signal trend.
+
+The final device state.
+
+Label these results as simulated.
+
+11. CREATE A SCENARIO-BASED SIMULATION CONTROL CENTER
+
+Build a professional simulation control panel with a scenario selector, start/pause/resume/restart controls, a timeline, and configurable simulation speed.
+
+Implement at least the following scenarios.
+
+Scenario 1 — Resting and stable
+
+The user is resting.
+
+Expected behavior:
+
+Stable baseline signals with small fluctuations.
+
+Low motion.
+
+Adequate signal quality.
+
+No stress-related intervention.
+
+Normal LED state.
+
+Vibration motor inactive.
+
+Scenario 2 — Illustrative stress-like episode
+
+Create a gradual, coherent change in the simulated signals.
+
+Expected behavior:
+
+Heart rate gradually rises above baseline.
+
+GSR increases.
+
+Motion remains relatively low.
+
+Signal quality remains adequate.
+
+The engine evaluates whether the configured conditions persist.
+
+The possible-stress state appears only when the actual rules are satisfied.
+
+The LED and vibration motor activate according to the configured response policy.
+
+The event log records the decision.
+
+The scenario must not trigger an alarm instantly simply because it has started.
+
+Scenario 3 — Physical activity and motion rejection
+
+Simulate movement with an increased heart rate and changing IMU values.
+
+Expected behavior:
+
+Motion intensity increases.
+
+The pulse signal may become noisy.
+
+The system detects motion artifacts.
+
+The decision engine avoids automatically interpreting movement-related heart-rate elevation as a stress event.
+
+The dashboard displays the motion-rejection explanation.
+
+Scenario 4 — Poor skin contact
+
+Simulate a loose strap or poor sensor contact.
+
+Expected behavior:
+
+Signal quality decreases.
+
+Relevant readings become unreliable.
+
+A contact warning appears.
+
+The system avoids presenting an unreliable result as a confident stress detection.
+
+The user receives a clear explanation.
+
+Scenario 5 — Guided calming and recovery
+
+Start from a configured elevated-signal state.
+
+Expected behavior:
+
+A breathing guide appears.
+
+The RGB indicator enters its calming pattern.
+
+The motor executes the configured illustrative haptic pattern.
+
+The simulated signals gradually recover according to the model.
+
+The dashboard charts the recovery process.
+
+The session ends with a summary.
+
+Scenario 6 — Mixed signals and uncertain conditions
+
+Create a scenario where one signal is elevated while the others remain stable, or where the sensor data are incomplete.
+
+Expected behavior:
+
+The engine does not automatically classify the situation as a stress event.
+
+The interface explains the uncertainty.
+
+The system continues monitoring or reports insufficient evidence according to the configured rules.
+
+Scenario 7 — Custom scenario builder
+
+Allow users to configure:
+
+Starting heart rate.
+
+Heart-rate trend.
+
+Starting GSR level.
+
+GSR trend.
+
+Motion intensity.
+
+Signal quality.
+
+Simulated duration.
+
+Sensor availability.
+
+Scenario speed.
+
+Provide sensible limits and label all inputs as simulation parameters.
+
+The scenario builder must modify the actual running simulation.
+
+Do not implement seven unrelated animations. All scenarios must use the same underlying signal engine and decision logic.
+
+12. LIVE DASHBOARD AND SYNCHRONIZED CHARTS
+
+Create a live monitoring dashboard with a professional, calm visual design.
+
+Display:
+
+Heart rate in BPM.
+
+GSR or normalized EDA signal.
+
+Skin temperature.
+
+Motion intensity.
+
+Signal quality.
+
+Current system state.
+
+LED state.
+
+Motor state.
+
+Battery level.
+
+Simulation connection status.
+
+Use synchronized scrolling charts with:
+
+Time axes.
+
+Labeled units.
+
+Configurable display windows.
+
+Clearly identified baselines.
+
+Current-value markers.
+
+Event annotations.
+
+A way to toggle individual signal series.
+
+The charts must be driven by the same simulation data as the 3D model and decision engine.
+
+Provide a clear distinction between:
+
+Simulated sensor readings.
+
+Configured thresholds.
+
+Personal baseline values.
+
+Derived decision states.
+
+Do not fill charts with random decorative lines disconnected from the simulation.
+
+When a stress-like event or intervention occurs, annotate the corresponding time on the charts.
+
+Provide a synchronized event timeline.
+
+13. SYSTEM ARCHITECTURE AND DATA FLOW VISUALIZATION
+
+Build an interactive system diagram.
+
+Show the actual conceptual architecture:
+
+MAX30102 ──┐
+Grove GSR ──┤
+MPU6050 ────┼──> Signal Acquisition
+MAX30205 ───┘
+
+Signal Acquisition
+↓
+Signal Quality Assessment
+↓
+Filtering and Feature Extraction
+↓
+Motion Artifact Rejection
+↓
+Personal Baseline Comparison
+↓
+Rule-Based Decision Engine
+↓
+Response Controller
+├──> WS2812B RGB LED
+├──> Motor Driver
+│       └──> Coin Vibration Motor
+└──> Monitoring Dashboard
+
+Each node should be selectable.
+
+When a node is selected:
+
+Display its function.
+
+Display its current simulated input and output where applicable.
+
+Highlight the associated physical components.
+
+Show the relevant active or inactive state.
+
+Explain the transition to the next stage.
+
+Animate data-flow indicators subtly when information passes through the pipeline.
+
+The architecture diagram must correspond to the simulation engine's actual logical structure, rather than merely being a decorative flowchart.
+
+14. BATTERY, CHARGING, AND DEVICE STATUS
+
+Add an illustrative device-status panel.
+
+Display:
+
+Simulated battery percentage.
+
+Charging state.
+
+USB-C connection state.
+
+Sensor availability.
+
+Bluetooth connection state.
+
+Simulation status.
+
+Firmware-version placeholder where appropriate.
+
+Allow users to simulate:
+
+Battery drain.
+
+Charging.
+
+Low battery.
+
+Sensor disconnection.
+
+Reconnection.
+
+Keep this state consistent throughout the interface.
+
+Do not claim that the simulated battery level predicts actual battery life without a measured power-consumption model.
+
+Do not represent Bluetooth as physically connected to real hardware. Use a clear label such as "Virtual Device Connected" in the software-only simulator.
+
+If a real hardware integration is not configured, all connection and charging states must be explicitly identified as simulated.
+
+15. CONNECT THE SIMULATOR TO THE 3D ASSEMBLY
+
+This integration is essential.
+
+The operational simulator and engineering explorer must not behave as independent applications.
+
+When the operational state changes:
+
+Highlight the active sensor.
+
+Highlight the ESP32 during processing.
+
+Highlight the motor-driver circuit during vibration.
+
+Update the actual RGB LED material.
+
+Display the current motor state.
+
+Update component properties.
+
+Update the event log and dashboard.
+
+When a user clicks a component in the existing assembly tree, show the component's operational role and current simulated values where applicable.
+
+When a user selects the MAX30102, show its sensor window and the corresponding optical path.
+
+When a user selects the GSR electrodes, highlight both electrode contact points.
+
+When a user activates a calming session, animate the motor and LED objects in the same 3D scene.
+
+When the user switches to the worn view, preserve the current simulation state.
+
+When the user returns to the exploded assembly, preserve the sensor values, event history, and operational state.
+
+Avoid duplicating the scene or losing state when changing views.
+
+16. ADD A REAL-TIME SIMULATION EVENT LOG
+
+Implement a timestamped event log.
+
+Record events such as:
+
+Simulation started.
+
+Baseline calibration started.
+
+Baseline calibration completed.
+
+Heart-rate deviation detected.
+
+GSR elevation detected.
+
+Motion artifact detected.
+
+Signal quality degraded.
+
+Possible-stress state entered.
+
+Intervention initiated.
+
+RGB pattern changed.
+
+Vibration pulse started.
+
+Calming session paused.
+
+Recovery state entered.
+
+Simulation stopped.
+
+Each event must be generated by the actual state transition or simulation action.
+
+Display a short explanation and relevant values.
+
+Allow filtering by:
+
+Sensors.
+
+Decision engine.
+
+Intervention.
+
+Device status.
+
+Errors and warnings.
+
+Provide a clear-log action and an option to export the current simulation session as CSV or JSON if practical.
+
+Do not create fictional log entries that are unrelated to what happened.
+
+17. PRESENTATION MODE FOR DEMONSTRATIONS
+
+Create a dedicated presentation mode that allows the user to demonstrate CALMA without navigating multiple engineering panels manually.
+
+A suggested sequence:
+
+Show the bracelet in its normal assembled state.
+
+Rotate the camera to reveal the product exterior.
+
+Transition to the bracelet worn on a virtual wrist.
+
+Highlight the optical sensor and GSR electrodes.
+
+Transition to the exploded assembly.
+
+Explain the major internal components.
+
+Show the signal-processing architecture.
+
+Start the stable resting scenario.
+
+Switch to an illustrative stress-like scenario.
+
+Show the sensor values and decision process.
+
+Highlight the RGB LED and vibration motor.
+
+Start a guided breathing session.
+
+Display the simulated recovery trend.
+
+End with a product overview and a clear wellness disclaimer.
+
+Allow manual camera control at any time.
+
+Include pause, resume, restart, and step navigation.
+
+The presentation should use smooth camera transitions and concise explanations.
+
+Do not automatically advance through the presentation if the user has paused it.
+
+18. ADVANCED FEATURES TO IMPLEMENT WHERE FEASIBLE
+
+After completing the core simulator, add the following enhancements when they can be implemented without destabilizing the application.
+
+A. Skin-contact visualization
+
+Show subtle highlights at the optical sensor and electrode contact regions.
+
+Optionally display an illustrative sensor-contact indicator.
+
+B. Component dependency highlighting
+
+When a sensor or processing stage is selected, highlight its dependencies in the assembly and system architecture.
+
+C. Synchronized engineering and operational views
+
+Allow the user to display the live sensor dashboard beside the 3D model.
+
+D. Adjustable simulation time scale
+
+Support normal speed, accelerated playback, and slow inspection.
+
+Ensure simulation time and chart timestamps remain consistent.
+
+E. Before-and-after comparison
+
+Compare the selected signal trends before and after an illustrative calming session.
+
+F. Educational explanations
+
+Add concise, technically accurate explanations for each sensor, the signal-processing stages, motion rejection, baseline calibration, and the response mechanism.
+
+G. Exportable demonstration report
+
+Generate a session summary containing:
+
+Selected scenario.
+
+Configured parameters.
+
+Simulated signal trends.
+
+State transitions.
+
+LED and motor events.
+
+Session duration.
+
+Important limitations.
+
+Label all synthetic data clearly.
+
+Do not claim that the generated report contains real patient measurements.
+
+H. Hardware integration readiness
+
+Organize the software so that a future real ESP32 data source could replace the simulation source through a well-defined interface.
+
+Do not attempt to implement unverified hardware communication or claim that the current simulator is connected to a physical bracelet.
+
+19. SOFTWARE ARCHITECTURE REQUIREMENTS
+
+Keep the code modular.
+
+Use reusable modules or their equivalents for:
+
+Existing 3D assembly.
+
+Virtual human wrist.
+
+Shared component registry.
+
+Simulation clock.
+
+Physiological signal generator.
+
+Signal-quality model.
+
+Motion artifact model.
+
+Baseline calibration.
+
+Decision engine.
+
+Response controller.
+
+RGB LED animation.
+
+Vibration animation.
+
+Breathing session.
+
+Chart data management.
+
+Event logging.
+
+Scenario configuration.
+
+Dashboard UI.
+
+Export functionality.
+
+Maintain a single source of truth for the simulation state.
+
+Avoid storing conflicting copies of sensor readings across multiple components.
+
+Separate:
+
+Simulation data generation.
+
+Decision logic.
+
+Device-response logic.
+
+3D presentation.
+
+User interface.
+
+The rendering frame rate must not determine the rate at which physiological data or decision rules are updated.
+
+Use deterministic scenario seeds or fixed configurable parameters where useful for reproducible demonstrations.
+
+Clean up animation loops, subscriptions, and event listeners appropriately.
+
+Preserve performance on a normal desktop browser.
+
+20. SCIENTIFIC AND MEDICAL TRANSPARENCY
+
+CALMA is a wellness and stress-awareness prototype concept, not an approved medical diagnostic device.
+
+All generated sensor readings must be identified as simulated.
+
+The application must not claim to:
+
+Diagnose stress or any medical condition.
+
+Measure actual physiology without connected hardware.
+
+Prove the clinical effectiveness of breathing or haptic interventions.
+
+Provide clinically validated thresholds.
+
+Reproduce the full behavior of the final embedded firmware.
+
+Explain that the software demonstrates the intended device architecture and operating logic.
+
+Use the term "possible stress-like pattern" rather than presenting the output as a definitive diagnosis.
+
+Keep illustrative parameters configurable and clearly documented.
+
+21. VISUAL QUALITY REQUIREMENTS
+
+Maintain the existing dark charcoal/navy engineering aesthetic with restrained teal accents.
+
+Improve the application with:
+
+Consistent typography.
+
+Clear panel hierarchy.
+
+Professional sensor charts.
+
+Smooth state transitions.
+
+Readable labels.
+
+Responsive layout.
+
+Thoughtful camera framing.
+
+Appropriate human-model shading.
+
+Consistent component highlighting.
+
+Clear separation between simulation and engineering modes.
+
+Avoid:
+
+Generic template dashboards.
+
+Excessive neon effects.
+
+Overcrowded panels.
+
+Large decorative animations.
+
+Fake medical monitor aesthetics.
+
+Unnecessary pop-ups.
+
+Controls that do not work.
+
+Placeholder content presented as real measurements.
+
+The simulator should look like a professional interactive engineering demonstration.
+
+22. IMPLEMENTATION ORDER
+
+Implement the project in controlled stages.
+
+Stage 1: Audit the current code and preserve all working functionality.
+
+Stage 2: Create a shared simulation state and component registry.
+
+Stage 3: Implement the deterministic physiological signal engine and configurable scenarios.
+
+Stage 4: Implement the decision engine, state transitions, and event log.
+
+Stage 5: Connect the existing sensor, LED, motor, and ESP32 scene objects to the simulation.
+
+Stage 6: Build the virtual wrist and worn-bracelet view.
+
+Stage 7: Implement the breathing session and coordinated LED/haptic animations.
+
+Stage 8: Build the live dashboard, synchronized charts, and system architecture view.
+
+Stage 9: Add presentation mode, device-status simulation, and useful exports.
+
+Stage 10: Test the integrated application and resolve regressions.
+
+At each stage, preserve the existing working application and verify the new functionality before proceeding.
+
+Do not stop after implementing the UI. The underlying state transitions, signal generator, component highlights, and animations must actually work together.
+
+23. FINAL ACCEPTANCE TESTS
+
+The application is not complete until the following checks have been performed.
+
+Existing engineering functionality
+
+The original 3D assembly still works.
+
+Camera controls remain functional.
+
+Component selection and visibility work.
+
+The exploded view remains functional.
+
+Inspection modes remain functional.
+
+Virtual wrist
+
+The bracelet fits naturally on the wrist.
+
+The wrist model can be rotated and inspected.
+
+The sensor side faces the skin.
+
+The worn view and standalone view can be switched without losing simulation state.
+
+Simulation
+
+Sensor readings change over simulation time.
+
+Charts use the same data as the decision engine.
+
+Scenarios produce their intended signal patterns.
+
+Motion rejection prevents an automatic stress-like classification based solely on simulated exercise-related heart-rate elevation.
+
+Poor contact reduces signal confidence.
+
+The engine explains its state transitions.
+
+Device responses
+
+The RGB LED visibly changes state.
+
+The vibration motor displays an identifiable animation.
+
+The breathing session controls work.
+
+Intervention timing is connected to the simulation state.
+
+Ending or pausing a session updates the event log correctly.
+
+Integration
+
+Selecting a sensor highlights the correct 3D component.
+
+Activating the motor highlights the correct hardware.
+
+The same assembly is used across engineering and operational modes.
+
+Changing views preserves simulation state.
+
+The event log contains only actual simulation events.
+
+Reliability
+
+No critical runtime errors occur.
+
+The simulation can be restarted cleanly.
+
+The scenario controls work.
+
+The application remains responsive.
+
+Existing functionality has not been removed.
+
+Do not claim that an acceptance test passed unless it has actually been verified.
+
+24. FINAL EXECUTION INSTRUCTION
+
+Begin by inspecting the existing code.
+
+Then implement the integrated operational simulation as an addition to the current CALMA application.
+
+Prioritize the following in order:
+
+Preserve the existing application.
+
+Implement a working shared simulation engine.
+
+Connect the simulation to the existing 3D hardware.
+
+Add the human-wrist visualization.
+
+Implement sensor-driven decision logic and coordinated LED/haptic responses.
+
+Add the live dashboard and system architecture.
+
+Refine the visual presentation and advanced features.
+
+If the full scope cannot be completed in one pass, finish the core integrated simulation first and continue with the remaining stages in the same project.
+
+Do not silently omit important features.
+
+Do not replace working functionality with mockups.
+
+Do not provide only a plan or code snippets. Make the actual changes in the current application, run the available checks, and fix the resulting defects.
+
+At completion, summarize the features implemented, the tests actually performed, and any limitations that remain.
+
+Ultimate objective: deliver a convincing, interactive CALMA digital twin that combines engineering assembly exploration, a virtual human-wrist experience, synchronized sensor simulation, transparent decision logic, and coordinated visual/haptic response demonstrations in one coherent application.

@@ -15,6 +15,11 @@ export interface Viewport3DHandle {
   togglePresentationMode: (active?: boolean) => boolean;
   triggerHapticVibration: () => void;
   setLedState: (hex: string, intensity?: number) => void;
+  setLedMode: (mode: 'solid' | 'pulse' | 'breathing' | 'warning', colorHex?: string) => void;
+  setWornMode: (worn: boolean) => void;
+  getWornMode: () => boolean;
+  highlightComponents: (ids: string[]) => void;
+  clearMultiHighlights: () => void;
   captureScreenshot: () => string;
 }
 
@@ -70,7 +75,7 @@ export const Viewport3D = forwardRef<Viewport3DHandle, Viewport3DProps>(({
       sceneManagerRef.current?.setViewMode(mode);
     },
     selectComponent: (id: string | null) => {
-      sceneManagerRef.current?.selectComponent(id);
+      sceneManagerRef.current?.selectComponent(id, false);
     },
     focusOnComponent: (id: string) => {
       sceneManagerRef.current?.focusOnComponent(id);
@@ -95,6 +100,21 @@ export const Viewport3D = forwardRef<Viewport3DHandle, Viewport3DProps>(({
     },
     setLedState: (hex: string, intensity?: number) => {
       sceneManagerRef.current?.setLedState(hex, intensity);
+    },
+    setLedMode: (mode: 'solid' | 'pulse' | 'breathing' | 'warning', colorHex?: string) => {
+      sceneManagerRef.current?.setLedMode(mode, colorHex);
+    },
+    setWornMode: (worn: boolean) => {
+      sceneManagerRef.current?.setWornMode(worn);
+    },
+    getWornMode: () => {
+      return sceneManagerRef.current?.getWornMode() ?? false;
+    },
+    highlightComponents: (ids: string[]) => {
+      sceneManagerRef.current?.highlightComponents(ids);
+    },
+    clearMultiHighlights: () => {
+      sceneManagerRef.current?.clearMultiHighlights();
     },
     captureScreenshot: () => {
       return sceneManagerRef.current?.captureScreenshot() || '';

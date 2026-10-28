@@ -328,6 +328,10 @@ export class MaterialLibrary {
   public wireGreen: THREE.MeshStandardMaterial;
   public wireWhite: THREE.MeshStandardMaterial;
   public wireCopper: THREE.MeshStandardMaterial;
+  public humanSkin: THREE.MeshStandardMaterial;
+  public skinSubsurface: THREE.MeshPhysicalMaterial;
+  public contactAura: THREE.MeshBasicMaterial;
+  public pipelineHighlight: THREE.MeshStandardMaterial;
 
   constructor() {
     const bumpMap = createEnclosureBumpTexture();
@@ -542,6 +546,38 @@ export class MaterialLibrary {
     this.wireGreen = new THREE.MeshStandardMaterial({ color: 0x16a34a, roughness: 0.55 });
     this.wireWhite = new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.55 });
     this.wireCopper = new THREE.MeshStandardMaterial({ color: 0xc87538, metalness: 0.88, roughness: 0.28 });
+
+    // 18. Human Skin PBR Materials (Realistic warm melanin skin tone with soft micro-roughness)
+    this.humanSkin = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(0xdca382), // Natural human skin tone
+      roughness: 0.68,
+      metalness: 0.04,
+    });
+
+    this.skinSubsurface = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color(0xd49b78),
+      roughness: 0.55,
+      metalness: 0.02,
+      clearcoat: 0.15,
+      clearcoatRoughness: 0.4,
+    });
+
+    // 19. Epidermal Sensor Coupling Highlight (Cyan/Gold contact aura)
+    this.contactAura = new THREE.MeshBasicMaterial({
+      color: new THREE.Color(0x00f0d0),
+      transparent: true,
+      opacity: 0.45,
+      depthWrite: false,
+    });
+
+    // 20. Architecture Pipeline Active Highlight Material
+    this.pipelineHighlight = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(0x38bdf8),
+      emissive: new THREE.Color(0x0284c7),
+      emissiveIntensity: 1.5,
+      roughness: 0.2,
+      metalness: 0.8,
+    });
   }
 
   public setLedColor(hex: string | number, intensity: number = 2.2) {
